@@ -6,18 +6,19 @@ export default function Board() {
     const [board, setBoard] = useState(Array(9).fill(null))
     const winner = calculateWinner(board)
 
-    if (winner !== null) {
-        console.log(winner)
+    function startANewGame() {
+        setBoard(Array(9).fill(null))
     }
-
     const [xNext, setIfXNext] = useState(false)
     const state = () => {
         if (winner) {
             if (winner === 'X') {
                 return 'winner is X'
-            } else return 'winner is O'
+            } else {
+                return 'winner is O'
+            }
         }
-        else return xNext ? 'next move is X' : 'next move is O';
+        else return <p className={`${xNext ? 'gold' : 'green'}`}> {xNext ? 'next move is X' : 'next move is O'} </p>
     }
 
     const renderSquare = position => {
@@ -36,7 +37,8 @@ export default function Board() {
         setBoard(
             prev => {
                 return prev.map((Square, pos) => {
-                    if (pos === position) {
+                    if (pos === position && Square === null) {
+
                         return xNext ? 'X' : 'O';
                     }
                     return Square
@@ -51,7 +53,7 @@ export default function Board() {
     return (
         <>
             <div>
-                <p>{state()} </p>
+                <div>{state()} </div>
             </div>
             <div className="board">
                 <div className="board-row">
@@ -69,6 +71,9 @@ export default function Board() {
                     {renderSquare(7)}
                     {renderSquare(8)}
                 </div>
+            </div>
+            <div>
+                <button onClick={startANewGame}> new game</button>
             </div>
         </>
     )
